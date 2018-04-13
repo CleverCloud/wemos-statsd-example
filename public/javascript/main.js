@@ -47,12 +47,11 @@ var hex_color = 0;
 
   l = 50;
 
-  lock = false;
+  //Color picker. Code from https://codepen.io/nokomundo/ 
   var hcl, hsl, lab, rgb;
-  var wemosIsOpen = false;
+
+
   draw = function () {
-    if (lock === false) {
-      console.log("wemosIsOpen is " + wemosIsOpen);
       $('.color div').hide();
       hsl = new d3.hsl(h, s / 100.0, l / 100.0);
       hcl = new d3.hcl(hsl);

@@ -18,7 +18,7 @@ body {
     border-radius: 3px;
     margin-bottom: 5px;
     color: #fff;
-    font-size: 14px;
+    font-size: 24px;
     background: rgba(0,0,0,0.9);
 }
 .notify > div.success {

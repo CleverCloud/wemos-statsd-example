@@ -74,6 +74,19 @@ var hex_color = 0;
     l = ~~(y / maxY * 10000) / 100;
     draw();
   });
+  
+  //Function to send the color on '/color' via XHR
+  sendColor = function (red, green, blue) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("PUT", "/color", true);
+    xhr.setRequestHeader("Content-Type", "text/plain");
+    xhr.send(red.toString().padStart(3, '0') + green.toString().padStart(3, '0') + blue.toString().padStart(3, '0'));
+    if (wemos_count > 0) {
+      notify("📡 Sent <code> " + hex_color + "</code>  to  <code>" + wemos_count + "</code>  wemos", "success");
+    } else {
+      notify("😶 No wemos found", "warning");
+    }
+  };
 
   $('body').bind("mousewheel", function (e) {
     var delta;

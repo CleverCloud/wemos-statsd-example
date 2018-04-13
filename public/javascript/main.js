@@ -1,3 +1,13 @@
+// How many wemos are connected. Default is 0
+var wemos_count = 0;
+
+// Global variable of the hex color. Default is 0
+var hex_color = 0;
+
+
+
+
+// Poll: fetching how many devices are connected from "/status"
 (function poll() {
   setTimeout(function () {
     $.ajax({
@@ -13,10 +23,12 @@
         } else if (data.client_number == 1){
           $('h4').html("✅ Wemos is connected");
           $("h4").removeClass("loading");
+          return wemos_count = data.client_number;
         }
         else if(data.client_number >= 2) {
           $('h4').html("✅✅✅ Woa! We have several wemos here :)");
           $("h4").removeClass("loading");
+          return wemos_count = data.client_number;
         }
       },
       dataType: "json",
@@ -87,33 +99,30 @@
   $('.color div').click(function () {
     return lock = false;
   });
-
+  
+  // HTML notification function
+  function notify(quote, type) {
+    var notifyElement = $("<div />").addClass(type).html(quote);
+    $('.notify').prepend(notifyElement);
+    setTimeout(function (ele) {
+      ele.remove();
+    }, 3000, notifyElement);
+  }
+  //Touch events manager
+  document.body.addEventListener('touchstart', function (e) {
+    var maxX, maxY, x, y;
+    maxX = window.innerWidth;
+    maxY = window.innerHeight;
+    x = e.pageX;
+    y = e.pageY;
+    h = ~~(x / maxX * 360);
+    l = ~~(y / maxY * 10000) / 100;
+    draw();
+    sendColor(rgb.r, rgb.g, rgb.b);
+  });
+  //On Click manager. Send colors to wemos if available
   $(window).click(function () {
-    wemosIsOpen = true;
-    console.log("wemosIsOpen is set to : " + wemosIsOpen);
-    if (wemosIsOpen) {
-      console.log("wemosIsOpen is " + wemosIsOpen);
-      var xhr = new XMLHttpRequest();
-      xhr.open("PUT", "/color", true);
-      xhr.setRequestHeader("Content-Type", "text/plain");
-      xhr.send(rgb.r.toString().padStart(3, '0') + rgb.g.toString().padStart(3, '0') + rgb.b.toString().padStart(3, '0'));
-      console.log("DA COLORS: " + rgb.r.toString().padStart(3, '0') + rgb.g.toString().padStart(3, '0') + rgb.b.toString().padStart(3, '0'));
-      wemosIsOpen = false;
-      console.log("wemosIsOpen is set to : " + wemosIsOpen);
-    }
-    return lock = true;
-  });
-
-  $(window).dblclick(function () {
-    return lock = false;
-  });
-
-  $('.color div').mouseenter(function () {
-    return $('.color div').html('🔓');
-  });
-
-  $('.color div').mouseleave(function () {
-    return $('.color div').html('🔒');
+    sendColor(rgb.r, rgb.g, rgb.b);
   });
 
   hash = location.hash.indexOf('(') > 0 ? location.hash.substr(1) : location.hash;

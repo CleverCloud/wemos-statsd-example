@@ -7,6 +7,27 @@ body {
   height: 100%;
   font-family: 'Source Sans Pro', sans-serif;
 }
+.notify {
+    position: fixed;
+    right: 5px;
+    top: 5px;
+    z-index: 99;
+}
+.notify > div {
+    padding: 10px 15px;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    color: #fff;
+    font-size: 14px;
+    background: rgba(0,0,0,0.9);
+}
+.notify > div.success {
+    background: #28a745;
+}
+.notify > div.warning {
+    background: #ffc107;
+    color: #000;
+}
 .jumbotron h1{
   font-family: 'Source Serif Pro', serif;
   font-weight: 700;

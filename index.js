@@ -29,12 +29,8 @@ app.put("/color", function(req, res) {
 });
 
 app.get("/status", function (req, res) {
-  var i = 0;
-  wsServer.clients.forEach(function each(client) {
-    i++;
-  });
-  res.send(JSON.stringify({client_number:i}));
-
+  const client_number = [...wsServer.clients].length;
+  res.send({client_number});
 });
 
 wsServer.on("connection", function (ws, req) {
